@@ -6,7 +6,11 @@ clc;
 addpath('data');
 addpath('networks');
 
+%% Config options.
 display_sample = false;
+train_split = 0.85;
+bs  = 128;
+lr = 1e-3;
 
 %% Load dataset & compute train/val split.
 digits = loadDIGITS();
@@ -18,13 +22,11 @@ if display_sample
     imshow(I);
 end
 
-[x, y, x_val, y_val] = trainValSplit(digits.x_train, digits.y_train, 0.85);
+[x, y, x_val, y_val] = trainValSplit(digits.x_train, digits.y_train, train_split);
 
 %% Setup network and training options.
 layers = simpleDigitsClassifier();
 
-bs  = 128;
-lr = 1e-3;
 val_freq = floor(numel(x) / bs);
 
 options = trainingOptions("sgdm", ...
@@ -40,5 +42,5 @@ options = trainingOptions("sgdm", ...
     Metrics="rmse", ...
     Verbose=false);
 
-%% Train
+%% Train.
 net = trainnet(x, y, layers, "mse", options);

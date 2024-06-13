@@ -18,43 +18,14 @@ if display_sample
     imshow(I);
 end
 
-[train_idx, val_idx] = trainingPartitions(digits.n_train,[0.85 0.15]);
+[x, y, x_val, y_val] = trainValSplit(digits.x_train, digits.y_train, 0.85);
 
-x_train = digits.x_train(:, :, :, train_idx);
-y_train = digits.y_train(train_idx);
+%% Setup network and training options.
+layers = simpleDigitsClassifier();
 
-x_val = digits.x_train(:, :, :, val_idx);
-y_val = digits.y_train(val_idx);
-
-%% Setup network architecture.
-layers = [
-    % Block 1
-    imageInputLayer([28 28 1])
-    convolution2dLayer(3, 8, Padding="same")
-    batchNormalizationLayer
-    reluLayer
-    averagePooling2dLayer(2, Stride=2)
-    % Block 2
-    convolution2dLayer(3, 16, Padding="same")
-    batchNormalizationLayer
-    reluLayer
-    averagePooling2dLayer(2, Stride=2)
-    % Block 3
-    convolution2dLayer(3, 32, Padding="same")
-    batchNormalizationLayer
-    reluLayer
-    % Block 4
-    convolution2dLayer(3, 32, Padding="same")
-    batchNormalizationLayer
-    reluLayer
-    % Block 5
-    fullyConnectedLayer(10)
-];
-
-%% Setup training options.
 bs  = 128;
 lr = 1e-3;
-val_freq = floor(numel(x_train) / bs);
+val_freq = floor(numel(x) / bs);
 
 options = trainingOptions("sgdm", ...
     MiniBatchSize=bs, ...
@@ -70,4 +41,4 @@ options = trainingOptions("sgdm", ...
     Verbose=false);
 
 %% Train
-net = trainnet(x_train, y_train, layers, "mse", options);
+net = trainnet(x, y, layers, "mse", options);

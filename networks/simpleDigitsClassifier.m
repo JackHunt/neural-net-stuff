@@ -22,6 +22,7 @@ function layers = simpleDigitsClassifier()
         reluLayer
         % Block 5
         fullyConnectedLayer(10)
+        softmaxLayer
     ];
 end
 

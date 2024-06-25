@@ -21,7 +21,8 @@ function layers = simpleDigitsClassifier()
         batchNormalizationLayer
         reluLayer
         % Block 5
-        fullyConnectedLayer(10)
+        %fullyConnectedLayer(10)
+        DPDenseLayer(10, 0.1)
         softmaxLayer
     ];
 end

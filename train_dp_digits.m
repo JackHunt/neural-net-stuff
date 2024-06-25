@@ -28,7 +28,6 @@ end
 
 %% Setup network and training options.
 layers = simpleDigitsClassifier();
-layers(end - 1) = DPDenseLayer(10, 0.1);
 
 val_freq = floor(size(x, 4) / bs);
 

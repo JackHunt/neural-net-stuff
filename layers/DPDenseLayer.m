@@ -1,5 +1,5 @@
-classdef DPDenseLayer < nnet.layer.Layer
-        % & nnet.layer.Formattable ... % (Optional) 
+classdef DPDenseLayer < nnet.layer.Layer ...
+        & nnet.layer.Formattable ... % (Optional) 
         % & nnet.layer.Acceleratable % (Optional)
     properties
         InitAlpha
@@ -19,21 +19,24 @@ classdef DPDenseLayer < nnet.layer.Layer
         end
 
         function layer = initialize(layer, layout)
+            N = prod(layout.Size(1:3));
+
             if isempty(layer.W)
-                layer.W = heInit(layer.K, layout.Size(1));
+                layer.W = dlarray(heInit(layer.K, N));
             end
             
             if isempty(layer.b)
-                layer.b = zeros([layer.K, 1], 'single');
+                layer.b = dlarray(zeros([layer.K, 1], 'single'));
             end
 
             if isempty(layer.alpha)
-                layer.alpha = layer.InitAlpha;
+                layer.alpha = dlarray(layer.InitAlpha);
             end
         end
 
         function Y = predict(layer, X)
-            Y = layer.W * X + layer.b;
+            p = dp(layer.alpha, layer.K);
+            Y = fullyconnect(X, layer.W, layer.b) * p;
         end
     end
 end

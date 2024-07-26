@@ -1,4 +1,4 @@
-function [outputArg1,outputArg2] = setLearnableParams(net, params)
+function net = setLearnableParams(net, params)
 %SETLEARNABLEPARAMS Sets all the learnable params of a net from a list.
     start_idx = 1;
     for i = 1:numel(net.Learnables)

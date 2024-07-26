@@ -8,7 +8,7 @@ function layers = simpleDigitsClassifierDense()
         fullyConnectedLayer(256)
         reluLayer
         fullyConnectedLayer(10)
-        softmaxLayer
+        % softmaxLayer
     ];
 end
 

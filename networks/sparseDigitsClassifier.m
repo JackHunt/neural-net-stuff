@@ -6,6 +6,7 @@ function layers = sparseDigitsClassifier(layer_dims, sparsity)
         flattenLayer
         backbone
         fullyConnectedLayer(10)
+        softmaxLayer
     ];
 end
 
